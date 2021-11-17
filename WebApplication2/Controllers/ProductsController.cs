@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,13 @@ namespace WebApplication2.Controllers
                 DescriptionLength = product.Description.Length,
             };
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task <IActionResult> List()
+        {
+            var products = await _dbContext.Products.ToListAsync();
+            return View(products);
         }
 
     }
