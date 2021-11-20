@@ -44,11 +44,17 @@ namespace WebApplication2.Controllers
         }
 
         [HttpGet]
-        public async Task <IActionResult> List()
+        public async Task<IActionResult> List(string name)
         {
-            var products = await _dbContext.Products.ToListAsync();
+            IQueryable<ProductEntity> productsQuery = _dbContext.Products;
+            if (!string.IsNullOrEmpty(name))
+            {
+                productsQuery = productsQuery.Where(x => x.Name.Contains(name));
+            }
+            var products = await productsQuery.ToListAsync();
             return View(products);
         }
+
 
     }
 }
