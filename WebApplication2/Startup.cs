@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication2.Database;
+using WebApplication2.Middleware;
+using WebApplication2.Services;
 
 namespace WebApplication2
 {
@@ -30,11 +32,15 @@ namespace WebApplication2
            services.AddDbContext<AppDbContext>(config => 
                 config.UseSqlServer(Configuration.GetConnectionString("Application"))
            );
+
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IMetricsCollector, MetricsCollector>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<CollectMetricsMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
