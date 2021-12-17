@@ -23,7 +23,14 @@ namespace WebApplication2.Services
 
         public IEnumerable<EndpointStats> GetEndpointStats()
         {
-            throw new NotImplementedException();
+            var requestsGrouped = _collected.GroupBy(x => new { x.HttpMethod, x.RequestUrl });
+            var requestsCounts = requestsGrouped.Select(x => new EndpointStats
+            {
+               HttpMethod = x.Key.HttpMethod,
+               RequestUrl = x.Key.RequestUrl,
+               RequestCount = x.Count(),
+            });
+            return requestsCounts.ToList();
         }
     }
 
@@ -42,6 +49,6 @@ namespace WebApplication2.Services
 
         public string RequestUrl { get; set; }
 
-        public int ResponseCode { get; set; }
+        public int RequestCount { get; set; }
     }
 }

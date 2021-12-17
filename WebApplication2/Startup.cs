@@ -34,7 +34,7 @@ namespace WebApplication2
            );
 
             services.AddTransient<IProductService, ProductService>();
-            services.AddTransient<IMetricsCollector, MetricsCollector>();
+            services.AddSingleton<IMetricsCollector, MetricsCollector>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
